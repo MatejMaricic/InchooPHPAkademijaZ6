@@ -19,6 +19,14 @@
 </form>
 
 <?php
+foreach ($comment as $comment){
 
+    if ($comment->post_id == $post_id) {
+        echo $comment->content;
+        echo '<br>';
+    }
+
+
+}
 ?>
 

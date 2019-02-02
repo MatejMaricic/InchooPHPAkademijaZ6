@@ -18,6 +18,12 @@
         </a>
         <?php $date = $post->getDate();
         echo date('d.m.Y H:i:s', strtotime($date));
+        echo '<pre>';
+        print_r($comments);
+        echo '</pre>';
+        echo '<pre>';
+        print_r($posts);
+        echo '</pre>';
         ?>
 
     </p>
