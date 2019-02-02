@@ -19,7 +19,7 @@ class Db extends PDO
      * @param string $name
      * @return Db
      */
-    public static function connect($name = 'ipa')
+    public static function connect($name = 'root')
     {
         $config = App::config("db");
         if(!isset(self::$instance[$name])) {

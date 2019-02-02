@@ -23,13 +23,15 @@ class IndexController
             header('Location: ' . App::config('url'));
         } else {
             $connection = Db::connect();
-            $sql = 'INSERT INTO post (content) VALUES (:content)';
+            $sql = 'INSERT INTO post (content,date) VALUES (:content,now()) ';
             $stmt = $connection->prepare($sql);
             $stmt->bindValue('content', $data['content']);
             $stmt->execute();
             header('Location: ' . App::config('url'));
         }
     }
+
+
     /**
      * @param $data
      * @return array|bool

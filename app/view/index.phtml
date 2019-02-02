@@ -1,8 +1,9 @@
-<form method="post" action="<?php echo App::config('url') ?>Index/newPost">
+<form method="post" action="<?php echo App::config('url') ?>Index/newPost"  enctype="multipart/form-data">
 
     <div class="form-group">
         <label for="content">What's on your mind?</label>
-        <input id="content" name="content">
+        <input id="content" name="content"><br>
+        <input type="file" name="image" id="image">
     </div>
 
     <button type="submit" class="btn btn-primary">Save</button>
@@ -10,10 +11,14 @@
 </form>
 
 
-<?php foreach ($posts as $post): ?>
+<?php foreach (array_reverse($posts) as $post): ?>
     <p>
         <a href="<?php echo App::config('url') ?>Index/view/<?= $post->getId() ?> ">
             <?= htmlspecialchars($post->getContent()) ?>
         </a>
+        <?php $date = $post->getDate();
+        echo date('d.m.Y H:i:s', strtotime($date));
+        ?>
+
     </p>
 <?php endforeach; ?>

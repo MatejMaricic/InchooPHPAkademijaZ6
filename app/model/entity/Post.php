@@ -3,11 +3,18 @@ class Post
 {
     private $id;
     private $content;
-    public function __construct($id, $content)
+    private $date;
+    public function __construct($id, $content, $date)
     {
         $this->setId($id);
         $this->setContent($content);
+        $this->setDate($date);
     }
+
+    /**
+     * @return mixed
+     */
+
     public function __set($name, $value)
     {
         $this->$name = $value;
@@ -34,7 +41,7 @@ class Post
         $statement = $db->prepare("select * from post");
         $statement->execute();
         foreach ($statement->fetchAll() as $post) {
-            $list[] = new Post($post->id, $post->content);
+            $list[] = new Post($post->id, $post->content, $post->date);
         }
         return $list;
     }
@@ -46,6 +53,6 @@ class Post
         $statement->bindValue('id', $id);
         $statement->execute();
         $post = $statement->fetch();
-        return new Post($post->id, $post->content);
+        return new Post($post->id, $post->content, $post->date);
     }
 }
