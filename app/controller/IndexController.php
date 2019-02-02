@@ -33,16 +33,20 @@ class IndexController
 
     public function newComment()
     {
-        $data = $_POST;
 
+        $data = $this->_validate($_POST);
+        if ($data === false) {
+            header('Location: ' . App::config('url'));
+        } else {
             $connection = Db::connect();
-            $sql = 'INSERT INTO comment (content, post_id) VALUES (:comment,:post_id) ';
+            $sql = 'INSERT INTO comment (content, post_id) VALUES (:content,:post_id) ';
             $stmt = $connection->prepare($sql);
-            $stmt->bindValue('comment', $data['comment']);
+            $stmt->bindValue('content', $data['content']);
             $stmt->bindValue('post_id', $data['post_id']);
             $stmt->execute();
-            header('Location: ' . App::config('url'). '/Index/view/'. $data['post_id']);
+            header('Location: ' . App::config('url') . '/Index/view/' . $data['post_id']);
 
+        }
     }
 
     /**
