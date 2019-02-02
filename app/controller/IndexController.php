@@ -31,6 +31,19 @@ class IndexController
         }
     }
 
+    public function newComment()
+    {
+        $data = $_POST;
+
+            $connection = Db::connect();
+            $sql = 'INSERT INTO comment (content, post_id) VALUES (:comment,:post_id) ';
+            $stmt = $connection->prepare($sql);
+            $stmt->bindValue('comment', $data['comment']);
+            $stmt->bindValue('post_id', $data['post_id']);
+            $stmt->execute();
+            header('Location: ' . App::config('url'). '/Index/view/'. $data['post_id']);
+
+    }
 
     /**
      * @param $data
@@ -51,4 +64,5 @@ class IndexController
         }
         return $data;
     }
+
 }

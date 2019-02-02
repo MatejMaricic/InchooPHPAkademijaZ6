@@ -4,11 +4,13 @@ class Post
     private $id;
     private $content;
     private $date;
+
     public function __construct($id, $content, $date)
     {
         $this->setId($id);
         $this->setContent($content);
         $this->setDate($date);
+
     }
 
     /**

@@ -7,4 +7,10 @@ content text,
 date datetime
 )engine=InnoDB;
 
-insert into post (content) values ('Evo danas pada kiša opet :('), ('Jedem jagode.');
+create table post
+(
+  id int not null primary key auto_increment,
+  content text,
+  post_id int not null
+
+) engine = InnoDB;
