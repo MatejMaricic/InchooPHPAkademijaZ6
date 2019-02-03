@@ -4,10 +4,11 @@ use social_network;
 create table post(
 id int not null primary key auto_increment,
 content text,
-date datetime
+date datetime,
+image varchar(250) DEFAULT NULL
 )engine=InnoDB;
 
-create table post
+create table comments
 (
   id int not null primary key auto_increment,
   content text,

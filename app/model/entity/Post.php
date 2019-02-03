@@ -4,12 +4,16 @@ class Post
     private $id;
     private $content;
     private $date;
+    private $commentCount;
+    private $image;
 
-    public function __construct($id, $content, $date)
+    public function __construct($id, $content, $date, $commentCount, $image)
     {
         $this->setId($id);
         $this->setContent($content);
         $this->setDate($date);
+        $this->setCommentCount($commentCount);
+        $this->setImage($image);
 
     }
 
@@ -40,10 +44,11 @@ class Post
     {
         $list = [];
         $db = Db::connect();
-        $statement = $db->prepare("select * from post ORDER BY id DESC");
+        $statement = $db->prepare("select post.id,post.content, post.date, post.image, (SELECT COUNT(*) FROM comments WHERE post_id = post.id) as commentCount from post ORDER BY id DESC
+");
         $statement->execute();
         foreach ($statement->fetchAll() as $post) {
-            $list[] = new Post($post->id, $post->content, $post->date);
+            $list[] = new Post($post->id, $post->content, $post->date, $post->commentCount, $post->image);
         }
         return $list;
     }
@@ -51,10 +56,10 @@ class Post
     {
         $id = intval($id);
         $db = Db::connect();
-        $statement = $db->prepare("select * from post where id = :id  ORDER BY id DESC");
+        $statement = $db->prepare("select post.id,post.content, post.date, post.image, (SELECT COUNT(*) FROM comments WHERE post_id = post.id) as commentCount from post where id = :id ORDER BY id DESC");
         $statement->bindValue('id', $id);
         $statement->execute();
         $post = $statement->fetch();
-        return new Post($post->id, $post->content, $post->date);
+        return new Post($post->id, $post->content, $post->date, $post->commentCount, $post->image);
     }
 }

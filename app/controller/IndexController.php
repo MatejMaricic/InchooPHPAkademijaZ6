@@ -1,7 +1,6 @@
 <?php
 class IndexController
 {
-
     private $db;
 
     public function __construct() {
@@ -21,24 +20,26 @@ class IndexController
         $view = new View();
         $view->render('view', [
             "post" => Post::find($id),
-            "comment" => Comment::find($id)
+            "comment" => Comment::find( $id )
         ]);
     }
     public function newPost()
     {
         $data = $this->_validate($_POST);
+        $uploadImage = $this->uploadImage( $data );
+        $imageName = ($uploadImage) ? $uploadImage : null;
+
         if ($data === false) {
             header('Location: ' . App::config('url'));
         } else {
-
-            $sql = 'INSERT INTO post (content,date) VALUES (:content,now()) ';
+            $sql = 'INSERT INTO post (content, date, image) VALUES (:content, now(), :image) ';
             $stmt = $this->db->prepare($sql);
-            $stmt->bindValue('content', $data['content']);
+            $stmt->bindValue('content', $data['content'] );
+            $stmt->bindValue( 'image', $imageName );
             $stmt->execute();
             header('Location: ' . App::config('url'));
         }
     }
-
     public function delete( $id = 0){
         if( $id ){
             $sql = 'DELETE FROM post WHERE id = :id LIMIT 1';
@@ -49,6 +50,31 @@ class IndexController
         }
     }
 
+    private function uploadImage( $data ) {
+        $target_dir    = App::config('uploads_folder');
+        $target_file   = $target_dir . basename( $_FILES["image"]["name"] );
+        $uploadOk      = false;
+
+        $imageFileType = strtolower( pathinfo( $target_file, PATHINFO_EXTENSION ) );
+        $check = getimagesize( $_FILES["image"]["tmp_name"] );
+
+        $uploadOk = ( $check ) ? true : $uploadOk;
+        $uploadOk = ( file_exists( $target_file ) ) ? false : $uploadOk;
+
+        if ( $imageFileType != "jpg" &&  $imageFileType != "jpeg" ) {
+            $uploadOk = false;
+        }
+
+        if ( ! $uploadOk  ) {
+            return false;
+        } else {
+            if ( move_uploaded_file( $_FILES["image"]["tmp_name"], $target_file ) ) {
+                return basename( $_FILES["image"]["name"] );
+            } else {
+                return false;
+            }
+        }
+    }
 
     public function newComment()
     {
@@ -57,7 +83,6 @@ class IndexController
         if ($data === false) {
             header('Location: ' . App::config('url'));
         } else {
-
             $sql = 'INSERT INTO comments (content, post_id) VALUES (:content,:post_id) ';
             $stmt = $this->db->prepare($sql);
             $stmt->bindValue('content', $data['content']);

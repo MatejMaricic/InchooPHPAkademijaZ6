@@ -17,6 +17,8 @@
             <?= htmlspecialchars($post->getContent()) ?>
         </a>
         <?php $date = $post->getDate();
+        echo date('d.m.Y H:i:s', strtotime($date));
+         echo 'Broj komentara:' . $post->getCommentCount()
 
         ?>
 
