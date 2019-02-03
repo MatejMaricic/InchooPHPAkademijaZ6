@@ -1,26 +1,42 @@
-<form method="post" action="<?php echo App::config('url') ?>Index/newPost"  enctype="multipart/form-data">
 
-    <div class="form-group">
-        <label for="content">What's on your mind?</label>
-        <input id="content" name="content"><br>
-        <input type="file" name="image" id="image">
+<div class="row">
+    <div class="col-8">
+        <?php foreach ($posts as $post): ?>
+            <div class="card card-bottom-space">
+                <img class="card-img-top" src="<?php echo App::config('url').'uploads/'.$post->getImage(); ?>">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <?php $date = $post->getDate();
+                        echo date('d.m.Y H:i:s', strtotime($date));
+                        ?>
+                    </h5>
+                    <p class="card-text"><?= htmlspecialchars($post->getContent()) ?></p>
+                    <a href="<?php echo App::config('url') ?>Index/view/<?= $post->getId() ?>" class="btn btn-primary">Više...</a>
+                    Broj komentara: <?php echo $post->getCommentCount(); ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
     </div>
+    <div class="col-4">
+        <div class="card">
+            <div class="card-header">
+                Dodaj novi post
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                <form method="post" action="<?php echo App::config('url') ?>Index/newPost"  enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input id="content" name="content"><br><br>
+                        <label for="image">Dodaj sliku</label>
+                        <input type="file" name="image" id="image">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Dodaj</button>
+                </form>
+                </p>
+            </div>
+        </div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+</div>
 
-</form>
 
-
-<?php foreach ($posts as $post): ?>
-    <p>
-        <a href="<?php echo App::config('url') ?>Index/view/<?= $post->getId() ?> ">
-            <?= htmlspecialchars($post->getContent()) ?>
-        </a>
-        <?php $date = $post->getDate();
-        echo date('d.m.Y H:i:s', strtotime($date));
-         echo 'Broj komentara:' . $post->getCommentCount()
-
-        ?>
-
-    </p>
-<?php endforeach; ?>

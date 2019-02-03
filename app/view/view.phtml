@@ -1,7 +1,11 @@
+
+<?php if($post->getImage()):?>
+    <img width="200" src="<?php echo App::config('url').'uploads/'.$post->getImage(); ?>">
+<?php endif;?>
+
 <p><?= htmlspecialchars($post->getContent()) ?></p>
-
 <?php $post_id = (int)$post->getId(); ?>
-
+<br>
 <a href="<?php echo App::config('url').'Index/delete/'.$post->getID();?>">DELETE POST</a>
 <h3>Comments</h3>
 
@@ -19,14 +23,13 @@
 </form>
 
 <?php
-foreach ($comment as $comment){
+foreach ($comment as $comment):
 
-    if ($comment->post_id == $post_id) {
+    if ($comment->post_id == $post_id):
         echo $comment->content;
         echo '<br>';
-    }
+    endif;
 
 
-}
+endforeach;
 ?>
-
