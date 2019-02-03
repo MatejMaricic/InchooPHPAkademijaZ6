@@ -36,25 +36,18 @@ class Comment
         }
         return $this;
     }
-    public static function all()
+
+    public static function find( $post_id )
     {
         $list = [];
+        $post_id = intval($post_id);
         $db = Db::connect();
-        $statement = $db->prepare("select * from comment");
+        $statement = $db->prepare("select * from comments where post_id = :post_id ORDER BY id DESC");
+        $statement->bindValue('post_id', $post_id);
         $statement->execute();
         foreach ($statement->fetchAll() as $comment) {
             $list[] = new Comment($comment->id, $comment->content, $comment->post_id);
         }
         return $list;
-    }
-    public static function find($post_id)
-    {
-        $post_id = intval($post_id);
-        $db = Db::connect();
-        $statement = $db->prepare("select * from comment where post_id = :post_id");
-        $statement->bindValue('post_id', $post_id);
-        $statement->execute();
-        $comment = $statement->fetch();
-        return new Comment($comment->id, $comment->content, $comment->post_id);
     }
 }

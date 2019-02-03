@@ -40,7 +40,7 @@ class Post
     {
         $list = [];
         $db = Db::connect();
-        $statement = $db->prepare("select * from post");
+        $statement = $db->prepare("select * from post ORDER BY id DESC");
         $statement->execute();
         foreach ($statement->fetchAll() as $post) {
             $list[] = new Post($post->id, $post->content, $post->date);
@@ -51,7 +51,7 @@ class Post
     {
         $id = intval($id);
         $db = Db::connect();
-        $statement = $db->prepare("select * from post where id = :id");
+        $statement = $db->prepare("select * from post where id = :id  ORDER BY id DESC");
         $statement->bindValue('id', $id);
         $statement->execute();
         $post = $statement->fetch();

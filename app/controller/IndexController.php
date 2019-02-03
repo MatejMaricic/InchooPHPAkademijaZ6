@@ -1,14 +1,19 @@
 <?php
 class IndexController
 {
+
+    private $db;
+
+    public function __construct() {
+        $this->db = Db::connect();
+    }
+
     public function index()
     {
         $view = new View();
         $posts = Post::all();
-        $comments = Comment::all();
         $view->render('index', [
-            "posts" => $posts,
-            "comments" => $comments
+            "posts" => $posts
         ]);
     }
     public function view($id = 0)
@@ -16,7 +21,7 @@ class IndexController
         $view = new View();
         $view->render('view', [
             "post" => Post::find($id),
-            "comment" => Comment::all()
+            "comment" => Comment::find($id)
         ]);
     }
     public function newPost()
@@ -25,9 +30,9 @@ class IndexController
         if ($data === false) {
             header('Location: ' . App::config('url'));
         } else {
-            $connection = Db::connect();
+
             $sql = 'INSERT INTO post (content,date) VALUES (:content,now()) ';
-            $stmt = $connection->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             $stmt->bindValue('content', $data['content']);
             $stmt->execute();
             header('Location: ' . App::config('url'));
@@ -41,9 +46,9 @@ class IndexController
         if ($data === false) {
             header('Location: ' . App::config('url'));
         } else {
-            $connection = Db::connect();
-            $sql = 'INSERT INTO comment (content, post_id) VALUES (:content,:post_id) ';
-            $stmt = $connection->prepare($sql);
+
+            $sql = 'INSERT INTO comments (content, post_id) VALUES (:content,:post_id) ';
+            $stmt = $this->db->prepare($sql);
             $stmt->bindValue('content', $data['content']);
             $stmt->bindValue('post_id', $data['post_id']);
             $stmt->execute();

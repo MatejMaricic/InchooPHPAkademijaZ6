@@ -11,19 +11,13 @@
 </form>
 
 
-<?php foreach (array_reverse($posts) as $post): ?>
+<?php foreach ($posts as $post): ?>
     <p>
         <a href="<?php echo App::config('url') ?>Index/view/<?= $post->getId() ?> ">
             <?= htmlspecialchars($post->getContent()) ?>
         </a>
         <?php $date = $post->getDate();
-        echo date('d.m.Y H:i:s', strtotime($date));
-        echo '<pre>';
-        print_r($comments);
-        echo '</pre>';
-        echo '<pre>';
-        print_r($posts);
-        echo '</pre>';
+
         ?>
 
     </p>
