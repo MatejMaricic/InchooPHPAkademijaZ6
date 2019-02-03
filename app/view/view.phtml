@@ -1,35 +1,54 @@
-
-<?php if($post->getImage()):?>
-    <img width="200" src="<?php echo App::config('url').'uploads/'.$post->getImage(); ?>">
-<?php endif;?>
-
-<p><?= htmlspecialchars($post->getContent()) ?></p>
 <?php $post_id = (int)$post->getId(); ?>
-<br>
-<a href="<?php echo App::config('url').'Index/delete/'.$post->getID();?>">DELETE POST</a>
-<h3>Comments</h3>
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <img src="<?php if ($post->getImage()):echo App::config('url') . 'uploads/' . $post->getImage(); endif; ?>"
+                 class="card-img-top">
+            <div class="card-body">
+                <p class="card-text"><?= htmlspecialchars($post->getContent()) ?></p>
+            </div>
+        </div>
+        <br>
+        <a href="<?php echo App::config('url') . 'Index/delete/' . $post->getID(); ?>" class="btn btn-primary "
+           role="button">Obriši post</a>
+    </div>
+    <div class="col-md-4">
+        <h3>Komentari</h3>
+        <div class="card" style="width: 18rem;">
+            <ul class="list-group list-group-flush">
+                <?php
+                foreach ($comment as $comment):
+                    if ($comment->post_id == $post_id):?>
 
-<form method="post" action="<?php echo App::config('url') ?>Index/newComment">
+                        <li class="list-group-item"><?php echo $comment->content; ?></li>
 
-    <div class="form-group">
-        <label for="content">Add a comment</label>
-        <input id="content" name="content"><br>
-        <input type="hidden" name="post_id" id="post_id" value="<?php echo $post_id; ?>" />
+                    <?php endif;
 
+
+                endforeach;
+                ?>
+            </ul>
+
+        </div>
+        <br>
+        <form method="post" action="<?php echo App::config('url') ?>Index/newComment">
+
+            <div class="form-group">
+                <label for="content">Dodaj novi komentar</label><br>
+                <input id="content" name="content"><br>
+                <input type="hidden" name="post_id" id="post_id" value="<?php echo $post_id; ?>"/>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary">Dodaj</button>
+
+        </form>
     </div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
-
-</form>
-
-<?php
-foreach ($comment as $comment):
-
-    if ($comment->post_id == $post_id):
-        echo $comment->content;
-        echo '<br>';
-    endif;
+</div>
 
 
-endforeach;
-?>
+
+
+
+

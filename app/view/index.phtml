@@ -1,22 +1,24 @@
-
 <div class="row">
     <div class="col-8">
         <?php foreach ($posts as $post): ?>
             <div class="card card-bottom-space">
-                <img class="card-img-top" src="<?php echo App::config('url').'uploads/'.$post->getImage(); ?>">
+                <img class="card-img-top" src="<?php if($post->getImage()):echo App::config('url') . 'uploads/' . $post->getImage(); endif; ?>">
                 <div class="card-body">
                     <h5 class="card-title">
-                        <?php $date = $post->getDate();
-                        echo date('d.m.Y H:i:s', strtotime($date));
-                        ?>
+                        <?= htmlspecialchars($post->getContent()) ?>
                     </h5>
-                    <p class="card-text"><?= htmlspecialchars($post->getContent()) ?></p>
+                    <p class="card-text">
+                        <?php $date = $post->getDate();
+                        echo 'Post dodan: ' . date('d.m.Y H:i:s', strtotime($date)); ?><br>
+                        Broj komentara: <?php echo $post->getCommentCount(); ?>
+                    </p>
                     <a href="<?php echo App::config('url') ?>Index/view/<?= $post->getId() ?>" class="btn btn-primary">Više...</a>
-                    Broj komentara: <?php echo $post->getCommentCount(); ?>
+
                 </div>
             </div>
         <?php endforeach; ?>
     </div>
+
     <div class="col-4">
         <div class="card">
             <div class="card-header">
@@ -24,7 +26,8 @@
             </div>
             <div class="card-body">
                 <p class="card-text">
-                <form method="post" action="<?php echo App::config('url') ?>Index/newPost"  enctype="multipart/form-data">
+                <form method="post" action="<?php echo App::config('url') ?>Index/newPost"
+                      enctype="multipart/form-data">
                     <div class="form-group">
                         <input id="content" name="content"><br><br>
                         <label for="image">Dodaj sliku</label>
