@@ -39,6 +39,17 @@ class IndexController
         }
     }
 
+    public function delete( $id = 0){
+        if( $id ){
+            $sql = 'DELETE FROM post WHERE id = :id LIMIT 1';
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue( 'id', $id );
+            $stmt->execute();
+            header('Location: ' . App::config('url'));
+        }
+    }
+
+
     public function newComment()
     {
 

@@ -1,8 +1,8 @@
 <p><?= htmlspecialchars($post->getContent()) ?></p>
 
-<?php $post_id = (int)$post->getId();
+<?php $post_id = (int)$post->getId(); ?>
 
-?>
+<a href="<?php echo App::config('url').'Index/delete/'.$post->getID();?>">DELETE POST</a>
 <h3>Comments</h3>
 
 <form method="post" action="<?php echo App::config('url') ?>Index/newComment">
