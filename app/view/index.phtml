@@ -2,7 +2,9 @@
     <div class="col-8">
         <?php foreach ($posts as $post): ?>
             <div class="card card-bottom-space">
-                <img class="card-img-top" src="<?php if($post->getImage()):echo App::config('url') . 'uploads/' . $post->getImage(); endif; ?>">
+                <?php if($post->getImage()):?>
+                    <img class="card-img-top" src="<?php echo App::config('url').'uploads/'.$post->getImage(); ?>">
+                <?php endif;?>
                 <div class="card-body">
                     <h5 class="card-title">
                         <?= htmlspecialchars($post->getContent()) ?>

@@ -2,8 +2,9 @@
 <div class="row">
     <div class="col-md-8">
         <div class="card">
-            <img src="<?php if ($post->getImage()):echo App::config('url') . 'uploads/' . $post->getImage(); endif; ?>"
-                 class="card-img-top">
+            <?php if($post->getImage()):?>
+                <img class="card-img-top" src="<?php echo App::config('url').'uploads/'.$post->getImage(); ?>">
+            <?php endif;?>
             <div class="card-body">
                 <p class="card-text"><?= htmlspecialchars($post->getContent()) ?></p>
             </div>

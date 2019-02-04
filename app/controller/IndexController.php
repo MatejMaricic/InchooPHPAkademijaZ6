@@ -59,7 +59,6 @@ class IndexController
         $check = getimagesize( $_FILES["image"]["tmp_name"] );
 
         $uploadOk = ( $check ) ? true : $uploadOk;
-        $uploadOk = ( file_exists( $target_file ) ) ? false : $uploadOk;
 
         if ( $imageFileType != "jpg" &&  $imageFileType != "jpeg" ) {
             $uploadOk = false;
